@@ -55,7 +55,10 @@ st.markdown(
             text-align: right;
             margin-left: auto;
         }
-        .assistant::before { content: "👩 "; font-weight: bold; }
+        .assistant::before {
+            content: "👩 "; /* Thay thế với icon mặt nữ giới */
+            font-weight: bold;
+        }
     </style>
     """,
     unsafe_allow_html=True
