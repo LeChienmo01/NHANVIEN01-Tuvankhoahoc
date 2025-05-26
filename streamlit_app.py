@@ -1,11 +1,23 @@
 import streamlit as st
 from openai import OpenAI
+import datetime
 import os
 
 # Hàm đọc nội dung từ file văn bản
 def rfile(name_file):
     with open(name_file, "r", encoding="utf-8") as file:
         return file.read()
+
+# Hàm lưu thông tin vào file TXT
+def save_to_txt(messages):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    file_path = "conversation_history.txt"
+    with open(file_path, "a", encoding="utf-8") as f:
+        f.write(f"Timestamp: {timestamp}\n")
+        for message in messages:
+            f.write(f"Role: {message['role']} - Message: {message['content']}\n")
+        f.write("\n\n")  # Thêm khoảng cách giữa các cuộc hội thoại
+    return file_path
 
 # Hiển thị logo (nếu có)
 try:
@@ -95,3 +107,19 @@ if prompt := st.chat_input("Bạn nhập nội dung cần trao đổi ở đây 
 
     # Cập nhật lịch sử tin nhắn trong session
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Tạo nút để tải file về (cho người dùng quản trị)
+if st.button('Tải lịch sử cuộc hội thoại'):
+    # Lưu thông tin vào file TXT
+    file_path = save_to_txt(st.session_state.messages)
+    
+    # Tạo liên kết tải file TXT
+    with open(file_path, "rb") as file:
+        st.download_button(
+            label="Tải về file TXT",
+            data=file,
+            file_name="conversation_history.txt",
+            mime="text/plain"
+        )
+    
+    st.success("Thông tin đã được lưu vào file 'conversation_history.txt'. Bạn có thể tải về từ nút bên trên!")
