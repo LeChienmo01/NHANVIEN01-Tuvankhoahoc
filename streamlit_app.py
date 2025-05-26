@@ -56,7 +56,7 @@ st.markdown(
             margin-left: auto;
         }
         .assistant::before {
-            content: "👩 "; /* Thay thế với icon mặt nữ giới */
+            content: "👨 "; /* Thay thế với icon mặt đàn ông */
             font-weight: bold;
         }
     </style>
